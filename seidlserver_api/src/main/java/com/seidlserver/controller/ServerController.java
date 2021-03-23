@@ -21,7 +21,7 @@ public class ServerController {
     @PostMapping(value = "/stop", produces = MediaType.APPLICATION_JSON_VALUE)
     public void stop(){
         try {
-            CommandExecutor.execute("/", "sudo shutdown -P now");
+            CommandExecutor.execute("sudo shutdown -P now");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -32,7 +32,7 @@ public class ServerController {
     @PostMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
     public void test(){
         try {
-            String s = CommandExecutor.execute("/", "ls");
+            String s = CommandExecutor.execute("ls");
             System.out.println(s);
         } catch (IOException e) {
             e.printStackTrace();

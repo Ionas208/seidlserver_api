@@ -12,14 +12,10 @@ public class CommandExecutor {
 
     public static String output = "";
 
-    public static String execute(String dir, String command) throws IOException, InterruptedException {
+    public static String execute(String command) throws IOException, InterruptedException {
         output="";
-        if(!dir.endsWith("/")){
-            dir+="/";
-        }
         Process process;
-        process = Runtime.getRuntime().exec(String.format(dir+" "+command));
-        String lol = "";
+        process = Runtime.getRuntime().exec(command);
         IOStreamHandler handler = new IOStreamHandler(process.getInputStream(), CommandExecutor::buildOutput);
         Executors.newSingleThreadExecutor().submit(handler);
         int exitCode = process.waitFor();
