@@ -9,21 +9,25 @@ import java.util.concurrent.Executors;
     Time: 14:58
 */
 public class CommandExecutor {
-    public static void execute() throws IOException, InterruptedException {
-        boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
-        String homeDirectory = System.getProperty("user.home");
-        Process process;
-        if (isWindows) {
-            process = Runtime.getRuntime()
-                    .exec(String.format("cmd.exe /c dir %s", homeDirectory));
-        } else {
-            process = Runtime.getRuntime()
-                    .exec(String.format("sh -c ls %s", homeDirectory));
+
+    public static String output = "";
+
+    public static String execute(String dir, String command) throws IOException, InterruptedException {
+        output="";
+        if(!dir.endsWith("/")){
+            dir+="/";
         }
-        IOStreamHandler handler =
-                new IOStreamHandler(process.getInputStream(), System.out::println);
+        Process process;
+        process = Runtime.getRuntime().exec(String.format(dir+" "+command));
+        String lol = "";
+        IOStreamHandler handler = new IOStreamHandler(process.getInputStream(), CommandExecutor::buildOutput);
         Executors.newSingleThreadExecutor().submit(handler);
         int exitCode = process.waitFor();
         assert exitCode == 0;
+        return output;
+    }
+
+    private static void buildOutput(String s){
+        output+=s;
     }
 }
