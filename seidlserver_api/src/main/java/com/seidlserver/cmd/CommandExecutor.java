@@ -1,6 +1,8 @@
 package com.seidlserver.cmd;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.concurrent.Executors;
 
 /*
@@ -9,21 +11,36 @@ import java.util.concurrent.Executors;
     Time: 14:58
 */
 public class CommandExecutor {
+    public static String execute(String... args) throws IOException, InterruptedException {
+        ProcessBuilder builder = new ProcessBuilder();
+        builder.command(args);
+        Process process = builder.start();
+        StringBuilder output = new StringBuilder();
+        StringBuilder error = new StringBuilder();
 
-    public static String output = "";
+        //Stdout
+        BufferedReader br = new BufferedReader(
+                new InputStreamReader(process.getInputStream()));
+        String line;
+        while((line = br.readLine()) != null){
+            output.append(line);
+        }
 
-    public static String execute(String command) throws IOException, InterruptedException {
-        output="";
-        Process process;
-        process = Runtime.getRuntime().exec(command);
-        IOStreamHandler handler = new IOStreamHandler(process.getInputStream(), CommandExecutor::buildOutput);
-        Executors.newSingleThreadExecutor().submit(handler);
-        int exitCode = process.waitFor();
-        assert exitCode == 0;
-        return output;
-    }
+        //Stderror
+        br = new BufferedReader(
+                new InputStreamReader(process.getErrorStream()));
+        line = null;
+        while((line = br.readLine()) != null){
+            error.append(line);
+        }
 
-    private static void buildOutput(String s){
-        output+=s;
+        int exitVal = process.waitFor();
+        if(exitVal == 0){
+            return output.toString();
+        }else{
+            throw new IOException("\nStderror:\n"+error.toString()+"Stdout:\n"+output);
+        }
     }
 }
+
+

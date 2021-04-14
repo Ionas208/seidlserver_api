@@ -1,6 +1,7 @@
 package com.seidlserver.controller;
 
 import com.seidlserver.cmd.CommandExecutor;
+import com.seidlserver.cmd.Commands;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +30,10 @@ public class ServerController {
         }
     }
 
-    @PostMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
     public void test(){
         try {
-            String s = CommandExecutor.execute("ls");
+            String s = CommandExecutor.execute(Commands.memTotalCommand);
             System.out.println(s);
         } catch (IOException e) {
             e.printStackTrace();

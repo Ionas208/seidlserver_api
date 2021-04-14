@@ -1,4 +1,4 @@
-package com.seidlserver.controller;
+package com.seidlserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
     Time: 15:01
 */
 @SpringBootApplication
-public class MainController {
+public class SeidlserverAPIController {
     public static void main(String[] args) {
-        SpringApplication.run(MainController.class, args);
+        SpringApplication.run(SeidlserverAPIController.class, args);
     }
 }
