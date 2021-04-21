@@ -6,15 +6,9 @@ package com.seidlserver.cmd;
     Time: 18:48
 */
 public class Commands {
-    public static final String[] memTotalCommand = new String[]{"cat", "/proc/meminfo", "|", "grep", "\"^MemTotal*\"", "|", "grep", "-Eo \"[0-9]*[0-9]\""};
-
-    public static void main(String[] args) {
-        try{
-            System.out.println(CommandExecutor.execute(memTotalCommand));
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-    }
+    public static final String[] memTotal = new String[]{"cat", "/proc/meminfo", "|", "grep", "\"^MemTotal*\"", "|", "grep", "-Eo \"[0-9]*[0-9]\""};
+    public static final String[] memFree = new String[]{"cat", "/proc/meminfo", "|", "grep", "\"^MemFree*\"", "|", "grep", "-Eo \"[0-9]*[0-9]\""};
+    public static final String[] shutdown = new String[]{"sudo", "shutdown", "-P", "now"};
+    public static final String[] restart = new String[]{"sudo", "restart"};
+    public static final String[] cpu = new String[]{"mpstat", "-o", "JSON"};
 }
-
-

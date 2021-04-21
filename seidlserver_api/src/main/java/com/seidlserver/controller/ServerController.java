@@ -19,26 +19,70 @@ import java.util.List;
 */
 @RestController
 public class ServerController {
-    @PostMapping(value = "/stop", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void stop(){
+    @PostMapping(value = "/stop")
+    public ResponseEntity stop(){
         try {
-            CommandExecutor.execute("sudo shutdown -P now");
+            CommandExecutor.execute(Commands.shutdown);
+            return ResponseEntity.ok().build();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return ResponseEntity.status(500).build();
     }
 
-    @GetMapping(value = "/test", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void test(){
+    @PostMapping(value = "/restart")
+    public ResponseEntity restart(){
         try {
-            String s = CommandExecutor.execute(Commands.memTotalCommand);
-            System.out.println(s);
+            CommandExecutor.execute(Commands.restart);
+            return ResponseEntity.ok().build();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        return ResponseEntity.status(500).build();
+    }
+
+    @GetMapping(value = "/memTotal")
+    public ResponseEntity<Long> memTotal(){
+        try {
+            String s = CommandExecutor.execute(Commands.memTotal);
+            Long memTotal = Long.parseLong(s);
+            return ResponseEntity.ok(memTotal);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(500).build();
+    }
+
+    @GetMapping(value = "/memFree")
+    public ResponseEntity<Long> memFree(){
+        try {
+            String s = CommandExecutor.execute(Commands.memFree);
+            Long memTotal = Long.parseLong(s);
+            return ResponseEntity.ok(memTotal);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(500).build();
+    }
+
+    @GetMapping(value = "/cpu")
+    public ResponseEntity<String> mem(){
+        try {
+            String s = CommandExecutor.execute(Commands.cpu);
+            return ResponseEntity.ok(s);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(500).build();
     }
 }

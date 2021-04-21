@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
     Time: 15:01
 */
 @SpringBootApplication
-public class SeidlserverAPIController {
+public class SeidlserverAPIApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SeidlserverAPIController.class, args);
+        SpringApplication.run(SeidlserverAPIApplication.class, args);
     }
 }
