@@ -49,7 +49,8 @@ public class ServerController {
     public ResponseEntity<Long> memTotal(){
         try {
             String s = CommandExecutor.execute(Commands.memTotal);
-            Long memTotal = Long.parseLong(s);
+            s = filterForNumbers(s);
+            Long memTotal = Long.parseLong(s)/1000;
             return ResponseEntity.ok(memTotal);
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,8 +64,9 @@ public class ServerController {
     public ResponseEntity<Long> memFree(){
         try {
             String s = CommandExecutor.execute(Commands.memFree);
-            Long memTotal = Long.parseLong(s);
-            return ResponseEntity.ok(memTotal);
+            s = filterForNumbers(s);
+            Long memFree = Long.parseLong(s)/1000;
+            return ResponseEntity.ok(memFree);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -84,5 +86,13 @@ public class ServerController {
             e.printStackTrace();
         }
         return ResponseEntity.status(500).build();
+    }
+
+    private String filterForNumbers(String s ){
+        return s.chars()
+                .filter(ch -> Character.isDigit(ch))
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint,
+                        StringBuilder::append)
+                .toString();
     }
 }
