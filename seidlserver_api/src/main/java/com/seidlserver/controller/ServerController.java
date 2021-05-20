@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /*
     Created by: Jonas Seidl
@@ -48,9 +49,10 @@ public class ServerController {
     @GetMapping(value = "/memTotal")
     public ResponseEntity<Long> memTotal(){
         try {
-            String s = CommandExecutor.execute(Commands.memTotal);
+            String s = CommandExecutor.execute(Commands.mem);
+            s = findLine(s, "MemTotal");
             s = filterForNumbers(s);
-            Long memTotal = Long.parseLong(s)/1000;
+            Long memTotal = Long.parseLong(s)/1_000_000;
             return ResponseEntity.ok(memTotal);
         } catch (IOException e) {
             e.printStackTrace();
@@ -63,9 +65,11 @@ public class ServerController {
     @GetMapping(value = "/memFree")
     public ResponseEntity<Long> memFree(){
         try {
-            String s = CommandExecutor.execute(Commands.memFree);
+            String s = CommandExecutor.execute(Commands.mem);
+            s = findLine(s, "MemFree");
+            System.out.println(s);
             s = filterForNumbers(s);
-            Long memFree = Long.parseLong(s)/1000;
+            Long memFree = Long.parseLong(s)/1_000_000;
             return ResponseEntity.ok(memFree);
         } catch (IOException e) {
             e.printStackTrace();
@@ -94,5 +98,18 @@ public class ServerController {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint,
                         StringBuilder::append)
                 .toString();
+    }
+
+    private String findLine(String line, String search){
+        List<String> lines = line.lines().collect(Collectors.toList());
+        for (String l: lines) {
+            if(l.contains(search)){
+                return l;
+            }
+        }
+        return "";
+    }
+
+    public static void main(String[] args) {
     }
 }

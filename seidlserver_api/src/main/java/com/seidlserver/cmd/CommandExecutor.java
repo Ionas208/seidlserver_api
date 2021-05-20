@@ -23,7 +23,7 @@ public class CommandExecutor {
                 new InputStreamReader(process.getInputStream()));
         String line;
         while((line = br.readLine()) != null){
-            output.append(line);
+            output.append(line+"\n");
         }
 
         //Stderror
