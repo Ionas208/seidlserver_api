@@ -3,10 +3,7 @@ package com.seidlserver.controller;
 import com.seidlserver.cmd.CommandExecutor;
 import com.seidlserver.cmd.Commands;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,9 +17,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("server")
 public class GameserverController {
-    @PostMapping(value = "/state")
+    @GetMapping(value = "/state")
     public ResponseEntity<String> stop(@RequestParam String script){
         try {
+            script = "/home/"+script+"/"+script;
             String[] command = {script,"details"};
             String status = CommandExecutor.execute(command);
 
