@@ -28,6 +28,7 @@ public class GameserverController {
             status = status.replace(" ","");
             status = status.replace("\u001B[31m","");
             status = status.replace("\u001B[0m","");
+            status = status.replace("\u001B[32m","");
             return ResponseEntity.ok(status);
         } catch (IOException e) {
             e.printStackTrace();
