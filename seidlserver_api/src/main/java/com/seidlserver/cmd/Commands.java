@@ -14,5 +14,4 @@ public class Commands {
     public static final String[] restart = new String[]{"sudo", "restart"};
 
     public static final String[] cpu = new String[]{"mpstat", "-o", "JSON"};
-
 }
