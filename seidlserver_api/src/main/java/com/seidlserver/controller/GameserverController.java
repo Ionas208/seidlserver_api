@@ -23,7 +23,7 @@ public class GameserverController {
             script = "/home/"+script+"/"+script;
             String[] command = {script,"details"};
             String status = CommandExecutor.execute(command);
-
+            System.out.println(status);
             status = findLine(status, "Status:");
             status = status.split(":")[1];
             status = status.replace(" ","");
