@@ -18,17 +18,16 @@ import java.util.stream.Collectors;
 @RequestMapping("gameserver")
 public class GameserverController {
     @GetMapping(value = "/state")
-    public ResponseEntity<String> stop(@RequestParam String script){
+    public ResponseEntity<String> state(@RequestParam String script){
         try {
             script = "/home/"+script+"/"+script;
             String[] command = {script,"details"};
             String status = CommandExecutor.execute(command);
-            System.out.println(status);
             status = findLine(status, "Status:");
             status = status.split(":")[1];
             status = status.replace(" ","");
-            System.out.println(status);
-
+            status = status.replace("\u001B[31m","");
+            status = status.replace("\u001B[0m","");
             return ResponseEntity.ok(status);
         } catch (IOException e) {
             e.printStackTrace();
@@ -37,6 +36,37 @@ public class GameserverController {
         }
         return ResponseEntity.status(500).build();
     }
+
+    @PostMapping(value = "/start")
+    public ResponseEntity<String> start(@RequestParam String script){
+        try {
+            script = "/home/"+script+"/"+script;
+            String[] command = {script,"start"};
+            CommandExecutor.execute(command);
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(500).build();
+    }
+
+    @PostMapping(value = "/stop")
+    public ResponseEntity<String> stop(@RequestParam String script){
+        try {
+            script = "/home/"+script+"/"+script;
+            String[] command = {script,"stop"};
+            CommandExecutor.execute(command);
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(500).build();
+    }
+
 
     private String findLine(String line, String search){
         List<String> lines = line.lines().collect(Collectors.toList());
