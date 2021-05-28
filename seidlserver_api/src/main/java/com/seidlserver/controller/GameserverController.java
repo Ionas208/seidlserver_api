@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
     Time: 20:26
 */
 @RestController
-@RequestMapping("server")
+@RequestMapping("gameserver")
 public class GameserverController {
     @GetMapping(value = "/state")
     public ResponseEntity<String> stop(@RequestParam String script){
