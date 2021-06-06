@@ -18,9 +18,9 @@ import java.util.stream.Collectors;
 @RequestMapping("gameserver")
 public class GameserverController {
     @GetMapping(value = "/state")
-    public ResponseEntity<String> state(@RequestParam String script){
+    public ResponseEntity<String> state(@RequestParam String linuxuser, @RequestParam String script){
         try {
-            script = "/home/"+script+"/"+script;
+            script = "/home/"+linuxuser+"/"+script;
             String[] command = {script,"details"};
             String status = CommandExecutor.execute(command);
             status = findLine(status, "Status:");
@@ -39,9 +39,9 @@ public class GameserverController {
     }
 
     @PostMapping(value = "/start")
-    public ResponseEntity<String> start(@RequestParam String script){
+    public ResponseEntity<String> start(@RequestParam String linuxuser, @RequestParam String script){
         try {
-            script = "/home/"+script+"/"+script;
+            script = "/home/"+linuxuser+"/"+script;
             String[] command = {script,"start"};
             CommandExecutor.execute(command);
             return ResponseEntity.ok().build();
@@ -54,9 +54,9 @@ public class GameserverController {
     }
 
     @PostMapping(value = "/stop")
-    public ResponseEntity<String> stop(@RequestParam String script){
+    public ResponseEntity<String> stop(@RequestParam String linuxuser, @RequestParam String script){
         try {
-            script = "/home/"+script+"/"+script;
+            script = "/home/"+linuxuser+"/"+script;
             String[] command = {script,"stop"};
             CommandExecutor.execute(command);
             return ResponseEntity.ok().build();
