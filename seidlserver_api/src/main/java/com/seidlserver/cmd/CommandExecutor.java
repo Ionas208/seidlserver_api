@@ -10,7 +10,18 @@ import java.util.concurrent.Executors;
     Date: 23.03.2021
     Time: 14:58
 */
+
+/***
+ * This class is used for executing a command
+ */
 public class CommandExecutor {
+    /***
+     * Executes a command
+     * @param args Command with its args
+     * @return Stdout of the command
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public static String execute(String... args) throws IOException, InterruptedException {
         ProcessBuilder builder = new ProcessBuilder();
         builder.command(args);

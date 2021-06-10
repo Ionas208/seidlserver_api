@@ -19,9 +19,22 @@ import java.util.stream.Collectors;
     Date: 23.03.2021
     Time: 15:02
 */
+
+/***
+ * Controller for server related requests
+ * Reachable under /server/
+ */
 @RestController
 @RequestMapping("server")
 public class ServerController {
+
+    /***
+     * Entrypoint for stopping the server
+     * @return ResponseEntity with Code
+     *         200 OK: When the stopping was successful
+     *         500 INTERNAL SERVER ERROR: When there is some other error
+     * Note: If successful, there will be no response, because the server will instantly shut down
+     */
     @PostMapping(value = "/stop")
     public ResponseEntity stop(){
         try {
@@ -35,6 +48,13 @@ public class ServerController {
         return ResponseEntity.status(500).build();
     }
 
+    /***
+     * Entrypoint for restarting the server
+     * @return ResponseEntity with Code
+     *         200 OK: When the restarting was successful
+     *         500 INTERNAL SERVER ERROR: When there is some other error
+     * Note: If successful, there will be no response, because the server will instantly shut down
+     */
     @PostMapping(value = "/restart")
     public ResponseEntity restart(){
         try {
@@ -48,6 +68,13 @@ public class ServerController {
         return ResponseEntity.status(500).build();
     }
 
+    /***
+     * Entrypoint for getting the total available memory
+     * @return ResponseEntity with Code
+     *         200 OK: When the fetching of the memory was successful
+     *                 Available memory is included in response body
+     *         500 INTERNAL SERVER ERROR: When there is some other error
+     */
     @GetMapping(value = "/memTotal")
     public ResponseEntity<Long> memTotal(){
         try {
@@ -64,6 +91,13 @@ public class ServerController {
         return ResponseEntity.status(500).build();
     }
 
+    /***
+     * Entrypoint for getting the free memory
+     * @return ResponseEntity with Code
+     *         200 OK: When the fetching of the memory was successful
+     *                 Free memory is included in response body
+     *         500 INTERNAL SERVER ERROR: When there is some other error
+     */
     @GetMapping(value = "/memFree")
     public ResponseEntity<Long> memFree(){
         try {
@@ -81,6 +115,13 @@ public class ServerController {
         return ResponseEntity.status(500).build();
     }
 
+    /***
+     * Entrypoint for getting the current CPU Usage
+     * @return ResponseEntity with Code
+     *         200 OK: When the fetching of the cpu usage was successful
+     *                 Output of mpstat -o Command is included in response body for further furnishing
+     *         500 INTERNAL SERVER ERROR: When there is some other error
+     */
     @GetMapping(value = "/cpu")
     public ResponseEntity<String> mem(){
         try {
@@ -94,6 +135,11 @@ public class ServerController {
         return ResponseEntity.status(500).build();
     }
 
+    /***
+     * Filters all numbers from a string
+     * @param s The String to filter from
+     * @return The string without numbers
+     */
     private String filterForNumbers(String s ){
         return s.chars()
                 .filter(ch -> Character.isDigit(ch))
@@ -102,6 +148,12 @@ public class ServerController {
                 .toString();
     }
 
+    /***
+     * Finds the line where a certain key word is contained
+     * @param line The lines to search through
+     * @param search The search key word
+     * @return The line where the search key word was found
+     */
     private String findLine(String line, String search){
         List<String> lines = line.lines().collect(Collectors.toList());
         for (String l: lines) {
@@ -110,8 +162,5 @@ public class ServerController {
             }
         }
         return "";
-    }
-
-    public static void main(String[] args) {
     }
 }
